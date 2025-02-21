@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgb(245, 144, 144);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .registration-form p {
+            margin-bottom: 15px;
+        }
+
+        .submit-button {
+            margin: 10px;
+            padding: 10px;
+            background-color: #28a745; 
+            color: white; 
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #218838; 
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            margin: 5px;
+            border-radius: 20px;
+            border: 1px solid #ccc; 
+            padding: 10px;
+            font-size: 16px; 
+            outline: none; 
+            transition: border-color 0.3s; 
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none; 
+        }
+
+        .login-link a:hover {
+            text-decoration: underline; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Вход</h2>
+        {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        <form method="POST" style="display: flex; flex-direction: column;">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Имя пользователя" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit" class="submit-button">Войти</button>
+            <div class="login-link">
+                <a href="{% url 'register' %}">Нет аккаунта?</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
