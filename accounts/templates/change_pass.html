@@ -45,15 +45,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Добро пожаловать, {{ username }}!</h1>
-        <p><strong>Имя пользователя:</strong> {{ username }}</p>
-        <p><strong>Email:</strong> {{ email }}<a href="{% url 'change_email' %}"> хотите сменить почту?</a></p>
-        <p><strong>Пароль:</strong> {{ password_display }}<a href="{% url 'change_pass' %}"> хотите сменить пароль?</a></p>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="old_password">Старый пароль:</label>
+            <input type="password" name="old_password" required><br>
+        
+            <label for="new_password">Новый пароль:</label>
+            <input type="password" name="new_password" required><br>
+        
+            <label for="confirm_password">Подтверждение нового пароля:</label>
+            <input type="password" name="confirm_password" required><br>
+        
+            <button type="submit">Изменить пароль</button>
+        </form>
         {% if messages %}
             {% for message in messages %}
                 <div>{{ message }}</div>
             {% endfor %}
         {% endif %}
+        
     </div>
 </body>
 </html>
