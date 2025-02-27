@@ -17,18 +17,25 @@ def register(request):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        username = request.POST['username']
+        password = request.POST['password']
+        remember_me = request.POST.get('remember_me', False)
 
+        user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user) 
-            messages.success(request, 'Вы успешно вошли в систему.')
+            login(request, user)
+            if remember_me:
+                request.session.set_expiry(1209600)  # 2 недели
             return redirect('home')  
         else:
-            messages.error(request, 'Неверный логин или пароль.')
+            return render(request, 'login.html', {'error': 'Неверные учетные данные.'})
+    return render(request, 'login.html')
 
-    return render(request, 'login.html')  
 
 def home(request):
-    return HttpResponse('<h1>Круто</h1>') 
+    user = request.user
+    return render(request, 'account.html', {
+        'username': user.username,
+        'email': user.email,
+        'password_display': '*' * 8
+    })
