@@ -4,12 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>главная страница</title>
+    <title>Патриот</title>
     <style>
-
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: block;
+            padding: 10px;
+        }
+        .invite-button {
+        background-color: rgba(0, 0, 128, 0);
+        background-repeat: no-repeat;
+        background-image: url('{% static "invite.png" %}');
+        background-size: contain; 
+        background-position: center; 
+        border: none;
+        width: 200px; 
+        height: 60px; 
+        cursor: pointer; 
+        }
+        .events-container {
+            max-width: 600px;
+            margin: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
-
+    <div class="container" style="text-align: center;">
+        <img src="{% static 'kid.jpg' %}" alt="аватар" style="width: 580px; padding: 10px; height: 300px;">
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="invite-button" style="margin-top: 10px;"></button>
+        </form>
+        <div class="container" style="background-color: rgb(127, 255, 212); margin-top: 10px;">тут типо инфа</div>
+    </div>    
+    <div style="margin: 10px;"></div><!--пустышка лол-->
+    <div class="container" style="text-align: center;">чем мы занимаемся</div>
+    <div style="margin: 10px;"></div><!--пустышка лол-->
+    <div class="container" style="text-align: center;">новости
+        {% if user.is_staff %}
+            <a href="{% url 'create_news' %}">Создать новость</a>
+        {% endif %}
+        {% for item in news %}
+        <div class="events-container">
+            <h2 style="margin: 10px;">{{ item.title }}</h2>
+            <p style="margin: 10px;">{{ item.content }}</p>
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" style="width: 100px; height: 100px; margin: 10px; ">
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
 </body>
 </html>
