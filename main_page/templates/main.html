@@ -57,6 +57,12 @@
     </style>
 </head>
 <body>
+    <header style="position: relative; width: 100%; padding: 10px; background-color: #07e0f400; height: 50px;">
+        <form action="{% url 'home' %}" method="post"> {% csrf_token %}
+        <button name="home_link" style="position: absolute; top: 10px; right: 10px; background-color: rgba(240, 248, 255, 0); padding: 0px; ">
+        <img src="{% static 'ava.png' %}" alt="Перейти" style="width: 50px; height: 50px;">
+    </button></form>
+    </header>
     <div class="container" style="text-align: center; padding: 0px;">
         <img src="{% static 'kid.png' %}" alt="аватар" style="width: 100%; height: 580px; object-fit: cover;">
         <form action="{% url 'register' %}" method="post">

@@ -5,8 +5,11 @@ from .models import News
 from django.contrib import messages
 
 def main(request):
-    if request.method == 'POST':
+    if 'home_link' in request.POST:
+        redirect('account/home/')
+    else:
         redirect('account/register/')
+
     news = News.objects.all().order_by('-pub_date')
     return render(request, 'main.html', {'news': news})
 
