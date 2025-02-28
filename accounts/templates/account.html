@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -41,12 +42,48 @@
         .logout-link:hover {
             background-color: #0056b3;
         }
+        .certificates-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .certificate {
+            flex: 0 0 auto;
+            width: 150px;
+            height: 100px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .certificate:hover {
+            background-color: #d0d0d0;
+        }
+        .avatar {
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-right: 10px; 
+        }   
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Добро пожаловать, {{ username }}!</h1>
-        <p><strong>Имя пользователя:</strong> {{ username }}</p>
+        <img src="{% static 'ava.png' %}" alt="аватар" class="avatar">
+        <p> <strong> Имя пользователя:</strong> {{ username }}</p>
         <p><strong>Email:</strong> {{ email }}<a href="{% url 'change_email' %}"> хотите сменить почту?</a></p>
         <p><strong>Пароль:</strong> {{ password_display }}<a href="{% url 'change_pass' %}"> хотите сменить пароль?</a></p>
         {% if messages %}
@@ -54,6 +91,17 @@
                 <div>{{ message }}</div>
             {% endfor %}
         {% endif %}
+        <div style="display: block;">
+            <h2>Ваши сертификаты</h2>
+            <div class="certificates-container">
+                <div class="certificate">Сертификат 1</div>
+                <div class="certificate">Сертификат 2</div>
+                <div class="certificate">Сертификат 3</div>
+                <div class="certificate">Сертификат 4</div>
+                <div class="certificate">Сертификат 5</div>
+                <div class="certificate">Сертификат 6</div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
