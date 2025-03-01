@@ -102,6 +102,10 @@
                 <div class="certificate">Сертификат 6</div>
             </div>
         </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-link">Выйти из аккаунта</button>
+        </form>
     </div>
 </body>
 </html>
