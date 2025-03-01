@@ -7,7 +7,7 @@ from django.contrib import messages
 def main(request):
     if 'home_link' in request.POST:
         redirect('account/home/')
-    else:
+    elif 'register'in request.POST:
         redirect('account/register/')
 
     news = News.objects.all().order_by('-pub_date')
@@ -34,7 +34,6 @@ def create_news(request):
             except News.DoesNotExist:
                 messages.error(request, f'Новость с названием "{title_to_delete}" не найдена.')
             return redirect('create_news')
-
     else:
         form = NewsForm()
     
