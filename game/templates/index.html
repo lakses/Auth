@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Game</title>
+    <!-- Загружаем тег static -->
+    {% load static %}
     <style>
         body {
             margin: 0;
@@ -12,7 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f7f7f7;
+            background-color: #f7f7f7; /* Фон за пределами игры */
             font-family: Arial, sans-serif;
         }
 
@@ -21,26 +23,28 @@
             width: 600px;
             height: 200px;
             border: 2px solid #333;
-            background-color: #fff;
+            /* Устанавливаем фон игры */
+            background-image: url("{% static 'forext.png' %}");
+            background-size: cover; /* Растягиваем фон на всю область */
+            background-position: center; /* Центрируем фон */
+            background-repeat: no-repeat; /* Запрещаем повторение фона */
             overflow: hidden;
         }
 
         #dino {
             position: absolute;
             bottom: 0;
-            left: 50px;
-            width: 40px;
-            height: 40px;
-            background-color: #333;
+            left: 40px;
+            width: 80px; /* Увеличили ширину изображения */
+            height: 120px; /* Увеличили высоту изображения */
         }
 
         #cactus {
             position: absolute;
             bottom: 0;
             right: -50px;
-            width: 20px;
-            height: 40px;
-            background-color: green;
+            width: 60px; /* Увеличили ширину изображения */
+            height: 80px; /* Увеличили высоту изображения */
             animation: moveCactus 2s linear infinite;
         }
 
@@ -62,7 +66,7 @@
                 bottom: 0;
             }
             50% {
-                bottom: 60px;
+                bottom: 100px; /* Увеличили высоту прыжка */
             }
             100% {
                 bottom: 0;
@@ -78,8 +82,9 @@
 </head>
 <body>
     <div class="game">
-        <div id="dino"></div>
-        <div id="cactus"></div>
+        <!-- Используем тег static для загрузки изображений -->
+        <img id="dino" src="{% static 'hum.png' %}" alt="Dino">
+        <img id="cactus" src="{% static 'rocks.png' %}" alt="Cactus">
     </div>
     <div class="score">Score: <span id="score">0</span></div>
     {% csrf_token %}
@@ -93,10 +98,16 @@
 
         let score = 0;
         let cactusPassed = false; // Флаг для отслеживания, прошел ли кактус мимо динозавра
+        let isGameOver = false; // Флаг для отслеживания состояния игры
 
         document.addEventListener("keydown", function (event) {
             if (event.code === "Space") {
-                jump();
+                if (isGameOver) {
+                    // Перезапуск игры
+                    resetGame();
+                } else {
+                    jump();
+                }
             }
         });
 
@@ -110,7 +121,18 @@
             }
         }
 
+        function resetGame() {
+            // Сброс игры
+            score = 0;
+            scoreElement.textContent = score;
+            isGameOver = false;
+            cactus.style.animation = "moveCactus 2s linear infinite"; // Перезапуск анимации кактуса
+            cactusPassed = false;
+        }
+
         let isAlive = setInterval(function () {
+            if (isGameOver) return; // Если игра окончена, ничего не делаем
+
             // Получаем текущую позицию динозавра
             let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
 
@@ -118,22 +140,22 @@
             let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
 
             // Проверяем столкновение
-            if (cactusLeft < 90 && cactusLeft > 50 && dinoTop >= 140) {
+            if (cactusLeft < 100 && cactusLeft > 40 && dinoTop >= 80) {
                 // Столкновение
+                isGameOver = true;
                 alert("Game Over! Your score: " + score);
-                score = 0; // Сбрасываем счет
-                scoreElement.textContent = score;
+                cactus.style.animation = "none"; // Останавливаем анимацию кактуса
             }
 
             // Если кактус прошел мимо динозавра и еще не был засчитан
-            if (cactusLeft <= 0 && !cactusPassed) {
+            if (cactusLeft < 0 && !cactusPassed) {
                 score++;
                 scoreElement.textContent = score;
                 cactusPassed = true; // Помечаем, что кактус засчитан
             }
 
             // Если кактус снова появляется справа, сбрасываем флаг
-            if (cactusLeft > 600) {
+            if (cactusLeft > 60) {
                 cactusPassed = false;
             }
         }, 10);
