@@ -57,16 +57,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Форумы</h1>
+        <h1>Posts</h1>
+        <a href="{% url 'post_create' %}">Create New Post</a>
         <ul>
-            {% for forum in forums %}
-                <li><a href="{% url 'topic_list' forum.id %}">{{ forum.title }}</a></li>
-            {% endfor %}
-        </ul>   
-
-
-        <a href="{% url 'create_forum' %}" class="create-forum-link">Создать новый форум</a>
-
+        {% for post in posts %}
+        <li>
+            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+            by {{ post.author.username }} on {{ post.created_at }}
+        </li>
+    {% endfor %}
+</ul>
     </div>
 </body>
 </html>

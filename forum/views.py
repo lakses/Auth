@@ -1,42 +1,36 @@
-from django.shortcuts import render, get_object_or_404,redirect
-from .models import Forum, Topic, Comment
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .form import ForumFormeeees
-from .form import CommentForm
-def forum_list(request):
-    forums = Forum.objects.all()
-    return render(request, 'forum_list.html', {'forums': forums})
-def topic_list(request, forum_id):
-    forum = get_object_or_404(Forum, id=forum_id)
-    topics = forum.topics.all()
+from .models import Post, Comment
+from .form import PostForm, CommentForm
 
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'post_list.html', {'posts': posts})
+
+@login_required
+def post_create(request):
     if request.method == 'POST':
-        topic_id = request.POST.get('topic_id')  
-        topic = get_object_or_404(Topic, id=topic_id)
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('post_list')
+    else:
+        form = PostForm()
+    return render(request, 'create.html', {'form': form})
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments = post.comments.all()
+    if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
+            comment.post = post
             comment.author = request.user
-            comment.topic = topic
             comment.save()
-            return redirect('topic_list', forum_id=forum.id)
-
-    return render(request, 'topic_list.html', {'forum': forum, 'topics': topics})
-
-def topic_detail(request, topic_id):
-    topic = get_object_or_404(Topic, id=topic_id)
-    comments = topic.comments.all()
-    return render(request, 'topic_detail.html', {'topic': topic, 'comments': comments})
-
-@login_required
-def create_forum(request):
-    if request.method == 'POST':
-        form = ForumFormeeees(request.POST)
-        if form.is_valid():
-            forum = form.save(commit=False)
-            forum.creator = request.user
-            forum.save()
-            return redirect('forum_list')
+            return redirect('post_detail', post_id=post.id)
     else:
-        form = ForumFormeeees()
-    return render(request, 'create.html', {'form': form})
+        form = CommentForm()
+    return render(request, 'post_detail.html', {'post': post, 'comments': comments, 'form': form})

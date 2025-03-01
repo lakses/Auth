@@ -244,8 +244,12 @@
                     Герои СВО
                 </button>
                 {% csrf_token %}
-                <a href="{% url 'forum_list' %}">
+                <a href="{% url 'post_list' %}">
                     <button style="margin: 0; width: 100px;" name="forum">Форум</button>
+                </a>
+                {% csrf_token %}
+                <a href="{% url 'game' %}">
+                    <button style="margin: 0; width: 100px;" name="game_url">Прыжок к победе</button>
                 </a>
                 <div x-show="activeField === 'vov'">
                     вов

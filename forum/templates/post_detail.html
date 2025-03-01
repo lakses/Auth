@@ -53,32 +53,27 @@
 </head>
 <body>
     <div class="container">
-        <h1>{{ forum.title }}</h1>
-        <ul>
-            {% for topic in topics %}
-                <li>
-                    <a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a>
-                    <div class="comment-section">
-                        <h3>Комментарии</h3>
-                        <ul class="comment-list">
-                            {% for comment in topic.comments.all %}
-                                <li><strong>{{ comment.author.username }}:</strong> {{ comment.content }}</li>
-                            {% empty %}
-                                <li>Нет комментариев.</li>
-                            {% endfor %}
-                        </ul>
+        <h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<p>Author: {{ post.author.username }}</p>
+<p>Created at: {{ post.created_at }}</p>
 
-                        <form method="POST" class="comment-form">
-                            {% csrf_token %}
-                            <textarea name="content" rows="3" placeholder="Ваш комментарий..." required></textarea>
-                            <button type="submit">Добавить комментарий</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-        <a href="{% url 'forum_list' %}">Назад к форумам</a>
+<h2>Comments</h2>
+<ul>
+    {% for comment in comments %}
+        <li>
+            <p>{{ comment.content }}</p>
+            <p>By {{ comment.author.username }} on {{ comment.created_at }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+<h3>Add a Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
     </div>
 </body>
 </html>
-добавь сюда коментарии

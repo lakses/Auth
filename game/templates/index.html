@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+
+        .game {
+            position: relative;
+            width: 600px;
+            height: 200px;
+            border: 2px solid #333;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        #dino {
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+        }
+
+        #cactus {
+            position: absolute;
+            bottom: 0;
+            right: -50px;
+            width: 20px;
+            height: 40px;
+            background-color: green;
+            animation: moveCactus 2s linear infinite;
+        }
+
+        @keyframes moveCactus {
+            0% {
+                right: -50px;
+            }
+            100% {
+                right: 600px;
+            }
+        }
+
+        .jump {
+            animation: jump 0.5s linear;
+        }
+
+        @keyframes jump {
+            0% {
+                bottom: 0;
+            }
+            50% {
+                bottom: 60px;
+            }
+            100% {
+                bottom: 0;
+            }
+        }
+
+        .score {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game">
+        <div id="dino"></div>
+        <div id="cactus"></div>
+    </div>
+    <div class="score">Score: <span id="score">0</span></div>
+    {% csrf_token %}
+    <a href="{% url 'main_page' %}">
+        <button style="margin: 0; width: 100px;" name="back">Вернуться</button>
+    </a>
+    <script>
+        const dino = document.getElementById("dino");
+        const cactus = document.getElementById("cactus");
+        const scoreElement = document.getElementById("score");
+
+        let score = 0;
+        let cactusPassed = false; // Флаг для отслеживания, прошел ли кактус мимо динозавра
+
+        document.addEventListener("keydown", function (event) {
+            if (event.code === "Space") {
+                jump();
+            }
+        });
+
+        function jump() {
+            if (!dino.classList.contains("jump")) {
+                dino.classList.add("jump");
+
+                setTimeout(function () {
+                    dino.classList.remove("jump");
+                }, 500);
+            }
+        }
+
+        let isAlive = setInterval(function () {
+            // Получаем текущую позицию динозавра
+            let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+
+            // Получаем текущую позицию кактуса
+            let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
+
+            // Проверяем столкновение
+            if (cactusLeft < 90 && cactusLeft > 50 && dinoTop >= 140) {
+                // Столкновение
+                alert("Game Over! Your score: " + score);
+                score = 0; // Сбрасываем счет
+                scoreElement.textContent = score;
+            }
+
+            // Если кактус прошел мимо динозавра и еще не был засчитан
+            if (cactusLeft <= 0 && !cactusPassed) {
+                score++;
+                scoreElement.textContent = score;
+                cactusPassed = true; // Помечаем, что кактус засчитан
+            }
+
+            // Если кактус снова появляется справа, сбрасываем флаг
+            if (cactusLeft > 600) {
+                cactusPassed = false;
+            }
+        }, 10);
+    </script>
+</body>
+</html>

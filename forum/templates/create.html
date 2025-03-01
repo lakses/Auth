@@ -45,13 +45,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Создать форум</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Создать форум</button>
-    </form>
-    <a href="{% url 'forum_list' %}">Назад к списку форумов</a>     
+        <h1>Сделать пост</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>  
     </div>
 </body>
 </html>

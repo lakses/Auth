@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'accounts',
     'main_page',
     'forum',
+    'game',
 ]
 
 MIDDLEWARE = [
