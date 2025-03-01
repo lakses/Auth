@@ -14,6 +14,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
+            font-family: 'Montserrat', sans-serif;
         }
         .container {
             max-width: 600px;
@@ -112,6 +113,61 @@
 .carousel-button:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
+.image-carousel {
+    position: relative;
+    max-width: 600px;
+    max-height: 600px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 2px solid #dddddd76;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+.image-container {
+    display: flex;
+    transition: transform 0.5s ease;/* Плавный переход */
+}
+
+
+.carousel-image {
+    width: 100%;
+    flex: 0 0 100%; 
+    display: none;
+}
+
+.carousel-image.active {
+    display: block; 
+}
+
+/* Стили для кнопок */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 24px;
+    z-index: 1;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+.carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
     </style>
 </head>
 <body>
@@ -156,7 +212,7 @@
                         <h2>{{ item.title }}</h2>
                         <p>{{ item.content }}</p>
                         {% if item.image %}
-                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="news-image" style="width: 30%; height: 30%;">
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="news-image" style="width: 70%; height: 70%;">
                         {% endif %}
                     </div>
                 {% empty %}
@@ -201,7 +257,21 @@
             </div>
         </div>
     </div>
-    <div style="margin: 10px;"></div><!--люблю пустышкэ-->
+    <div style="margin: 10px;"></div><!--обожаю пустышкэ-->
+    <div class="image-carousel">
+
+        <button class="carousel-button prev" onclick="changeImage(-1)">&#10094;</button>
+    
+
+        <div class="image-container">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfUpPgk9UvPyqPbZbl48XArlRuYaTKTShKOnjirlX4TsOHAyw/viewform?usp=header" style="display: flex;"><img src="{% static 'strategie.png'%}" class="carousel-image active" style="height: 70%; width: 70%; display: flex;"></a>
+
+        </div>
+    
+
+        <button class="carousel-button next" onclick="changeImage(1)">&#10095;</button>
+    </div>
+    <div style="margin: 10px;"></div>
     <div class="container"><img src="{%static 'megaKruto.jpg'%}" alt=""></div>
     <div class="container" style="text-align: center;">
     </div>
@@ -230,5 +300,28 @@
             });
         }
     </script>
+   <script>
+
+    let currentIndex2 = 0; 
+
+    function changeImage(direction) {
+        const images = document.querySelectorAll('.carousel-image');
+        const totalImages = images.length;
+
+        images[currentIndex2].classList.remove('active');
+
+
+        currentIndex2 += direction;
+
+
+        if (currentIndex2 < 0) {
+            currentIndex2 = totalImages - 1;
+        } else if (currentIndex2 >= totalImages) {
+            currentIndex2 = 0; 
+        }
+
+        images[currentIndex2].classList.add('active');
+    }
+</script>
 </body>
 </html>
