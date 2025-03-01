@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Патриот</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
         }
         .container {
             max-width: 600px;
@@ -57,23 +59,27 @@
     </style>
 </head>
 <body>
-    <header style="position: relative; width: 100%; padding: 10px; background-color: #07e0f400; height: 50px;">
+    <header style="position: relative; width: 100%;background-color: #0B2F7D; height: 80px; margin: 0px;">
         <form action="{% url 'home' %}" method="post"> {% csrf_token %}
         <button name="home_link" style="position: absolute; top: 10px; right: 10px; background-color: rgba(240, 248, 255, 0); padding: 0px; ">
         <img src="{% static 'ava.png' %}" alt="Перейти" style="width: 50px; height: 50px;">
     </button></form>
     </header>
-    <div class="container" style="text-align: center; padding: 0px;">
+    <div class="container" style="text-align: center; padding: 0px; width: 600px;">
         <img src="{% static 'kid.png' %}" alt="аватар" style="width: 100%; height: 580px; object-fit: cover;">
         <form action="{% url 'register' %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="invite-button" style="margin-top: 10px; display: block;" name="register"></button>
+            <button type="submit" class="invite-button" style="padding: 10px; display: block;" name="register"></button>
         </form>
-        <div class="container" style="background-color: rgb(127, 255, 212); margin-top: 10px;">тут типо инфа</div>
+        <div style="display: block; text-align: left; margin: 5px; font-family: 'Montserrat', sans-serif;">
+        <h2>Будущее в твоих руках!</h2>
+        Присоединяйся к движению Патриотов и стань частью команды, которая меняет мир! Здесь собраны мечтатели,лидеры и активные граждане,готовые делать шаги к лучшему будущему. Вместе мы создадим сообщество, где каждый сможет внести свой вклад. Действуй,мечтай,вдохновляй! Будь патриотом своей страны и присоединяйся к нам сегодня!
+        </div>
+        <div class="container" style="box-shadow: 0px; background-color: (127, 255, 212, 0); margin-top: 10px;"><img src="{% static 'cool.jpg' %}" style="width: 100%; height: 100%;"></div>
     </div>    
     <div style="margin: 10px;"></div><!--пустышка лол-->
-    <div class="container" style="text-align: center;">чем мы занимаемся</div>
-    <div style="margin: 10px;"></div><!--пустышка лол-->
+    <div class="container" style="text-align: center; padding: 0px;"><img src="{% static 'inf.jpg' %}"style="width: 100%; height: 100%; object-fit: cover;"></div>
+    <div style="margin: 10px;"></div><!--ещё одна пустышка-->
     <div class="container" style="text-align: center;">новости
         {% if user.is_staff %}
             <a href="{% url 'create_news' %}">Создать новость</a>
@@ -88,7 +94,7 @@
         </div>
     {% endfor %}
     </div>
-    <div style="margin: 10px;"></div><!--пустышка лол-->
+    <div style="margin: 10px;"></div><!--ну не много их-->
     <div class="container">
         <div class="container" x-data="{ activeField: null }" style="display: flex; flex-direction: column; gap: 10px;">
             <div style="display: block; flex-direction: column; gap: 10px; text-align: center;">
