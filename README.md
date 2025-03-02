@@ -23,7 +23,7 @@
 
 4.Запустите сервер:
 ```bash
-python manage.py runserver
+   python manage.py runserver
 
 5.откройте браузер и откройте http://127.0.0.1:8000/
 
