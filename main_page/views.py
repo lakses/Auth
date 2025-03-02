@@ -3,7 +3,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from .forms import NewsForm
 from .models import News
 from django.contrib import messages
-
+from django.shortcuts import get_object_or_404
 def main(request):
     if 'home_link' in request.POST:
         redirect('account/home/')
@@ -38,3 +38,7 @@ def create_news(request):
         form = NewsForm()
     
     return render(request, 'create_news.html', {'form': form})
+
+def news_detail(request, news_id):
+    news_item = get_object_or_404(News, id=news_id)
+    return render(request, 'news_detail.html', {'news_item': news_item})
