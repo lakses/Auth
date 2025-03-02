@@ -183,6 +183,37 @@
     right: 10px; 
     padding: 0px;
 }
+.game-button{
+    background-color: rgba(0, 0, 128, 0);
+    background-repeat: no-repeat;
+    background-image: url('{% static "game_button.png" %}');
+    background-size: contain; 
+    background-position: center; 
+    border: none;
+    width: 100px; 
+    height: 100px; 
+    cursor: pointer; 
+    right: 10px; 
+}
+.forum-button{
+    background-color: rgba(0, 0, 128, 0);
+    background-repeat: no-repeat;
+    background-image: url('{% static "forum_button.png" %}');
+    background-size: contain; 
+    background-position: center; 
+    border: none;
+    width: 100px; 
+    height: 100px; 
+    cursor: pointer; 
+    right: 10px; 
+}
+.hover-shadow {
+        transition: box-shadow 0.3s ease; 
+    }
+
+.hover-shadow:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    }
     </style>
 </head>
 <body>
@@ -246,38 +277,49 @@
     <div style="margin: 10px;"></div><!--ну не много их-->
     <div class="container">
         <div class="container" x-data="{ activeField: null }" style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: block; flex-direction: column; gap: 10px; text-align: center;">
+            <div style="display: block; flex-direction: column; gap: 10px; text-align: center; border: none;">
+                <!-- Кнопка "ВОВ" -->
                 <button 
                     @click="activeField = activeField === 'vov' ? null : 'vov'" 
-                    style="margin: 0; width: 100px;"
+                    style="margin: 0; width: 100px; background-color: rgba(0, 0, 128, 0); background-repeat: no-repeat; border: none; cursor: pointer;"
+                    class="hover-shadow"
                 >
-                    ВОВ
+                    <img src="{% static 'hist_button.png' %}" style="width: 100px; height: 100px;">
                 </button>
         
+                <!-- Кнопка "Герои СВО" -->
                 <button 
                     @click="activeField = activeField === 'heroes' ? null : 'heroes'" 
-                    style="margin: 0; width: 100px;"
+                    style="margin: 0; width: 100px; height: 100px; background-color: rgba(0, 0, 128, 0); background-repeat: no-repeat; border: none; cursor: pointer;"
+                    class="hover-shadow"
                 >
-                    Герои СВО
+                    <img src="{% static 'hero_button.png' %}" style="width: 100px; height: 100px;">
                 </button>
+        
+                <!-- Кнопка "Форум" -->
                 {% csrf_token %}
                 <a href="{% url 'post_list' %}">
-                    <button style="margin: 0; width: 100px;" name="forum">Форум</button>
+                    <button class="forum-button hover-shadow"></button>
                 </a>
+        
+                <!-- Кнопка "Прыжок к победе" -->
                 {% csrf_token %}
                 <a href="{% url 'game' %}">
-                    <button style="margin: 0; width: 100px;" name="game_url">Прыжок к победе</button>
+                    <button class="game-button hover-shadow"></button>
                 </a>
+        
+                <!-- Контент для "ВОВ" -->
                 <div x-show="activeField === 'vov'">
-                    вов
+                    Великая Отечественная война (1941–1945) — одна из самых трагических и героических страниц в истории нашей страны. Это была не просто война, это была битва за выживание, за свободу и независимость Советского Союза, за будущее всего человечества.
                 </div>
         
+                <!-- Контент для "Герои СВО" -->
                 <div x-show="activeField === 'heroes'">
-                    герои сво
+                    Специальная военная операция (СВО), начавшаяся 24 февраля 2022 года, стала важным этапом в современной истории России. Эта операция была initiated с целью защиты национальных интересов, обеспечения безопасности страны и поддержки мирного населения Донбасса, которое на протяжении восьми лет страдало от вооруженных конфликтов и гуманитарного кризиса.
                 </div>
             </div>
         </div>
-    </div>
+        
     <div style="margin: 10px;"></div><!--обожаю пустышкэ-->
     <div class="image-carousel">
 
